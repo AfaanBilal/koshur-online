@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@guolao/vue-monaco-editor": "^1.4.1",
     "vue": "^3.3.11"
   },
   "devDependencies": {
