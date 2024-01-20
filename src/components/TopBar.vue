@@ -29,7 +29,8 @@ const chosen = ref(examples[0]);
         <div class="flex items-center gap-2 px-2 ml-auto">
             <div class="px-2 border rounded border-slate-600">
                 Example:
-                <select v-model="chosen" class="p-1 m-1 rounded outline-none bg-slate-800" @change="$emit('example', chosen)">
+                <select v-model="chosen" class="p-1 m-1 rounded outline-none bg-slate-800"
+                    @change="$emit('example', chosen)">
                     <option v-for="e in examples" :key="e">{{ e }}</option>
                 </select>
             </div>
@@ -42,7 +43,12 @@ const chosen = ref(examples[0]);
                 &Cross;
             </div>
         </div>
-        <div class="ml-auto text-sm">
+        <div class="flex gap-2 ml-auto text-sm">
+            <a href="https://github.com/AfaanBilal/koshur-online" target="_blank" rel="noopener"
+                class="hover:text-blue-400">
+                GitHub
+            </a>
+            |
             <a href="https://afaan.dev" target="_blank" rel="noopener" class="hover:text-blue-400">
                 &copy; Afaan Bilal
             </a>
