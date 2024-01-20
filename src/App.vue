@@ -19,7 +19,7 @@ import { runner } from './utils/runner.js';
 import { koshurConf, language } from './utils/language';
 
 const code = ref(examples['Hello world!']);
-const log = ref('');
+const log = ref(`Console\n=======\n\n`);
 
 const setExample = (e: keyof typeof examples) => {
     code.value = examples[e];
@@ -38,7 +38,7 @@ const logger = (...args: Array<any>) => {
 };
 
 const clearLog = () => {
-    log.value = '';
+    log.value = 'Console\n=======\n\n';
 };
 
 function runCode() {
