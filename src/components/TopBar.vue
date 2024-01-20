@@ -14,7 +14,7 @@
 import { ref } from 'vue';
 
 const examples = [
-    'Hello world!', 'Arithmetic', 'Control Flow', 'Functions', 'Test'
+    'Hello world!', 'Arithmetic', 'Control Flow', 'Functions', 'Fibonacci', 'Test'
 ];
 
 const chosen = ref(examples[0]);
