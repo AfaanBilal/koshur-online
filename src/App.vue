@@ -11,7 +11,7 @@
  * @copyright   2024 Afaan Bilal
  */
 
-import { ref, shallowRef } from 'vue';
+import { nextTick, ref, shallowRef } from 'vue';
 import { useMonaco } from '@guolao/vue-monaco-editor';
 import TopBar from './components/TopBar.vue';
 import examples from './utils/examples';
@@ -34,7 +34,7 @@ const logger = (...args: Array<any>) => {
 
     log.value += '\n';
 
-    logRef.value.scrollTop = logRef.value.scrollHeight;
+    nextTick(() => { logRef.value.scrollTop = logRef.value.scrollHeight; });
 };
 
 const clearLog = () => {
