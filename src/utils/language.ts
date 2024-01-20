@@ -10,6 +10,8 @@
  * @copyright   2024 Afaan Bilal
  */
 
+export const KOSHUR = 'koshur';
+
 export const koshurConf = {
     comments: {
         lineComment: '#',

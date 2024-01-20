@@ -16,7 +16,7 @@ import { useMonaco } from '@guolao/vue-monaco-editor';
 import TopBar from './components/TopBar.vue';
 import examples from './utils/examples';
 import { runner } from './utils/runner.js';
-import { koshurConf, language } from './utils/language';
+import { koshurConf, language, KOSHUR } from './utils/language';
 
 const code = ref(examples['Hello world!']);
 const log = ref(`Console\n=======\n\n`);
@@ -52,11 +52,11 @@ const monaco = useMonaco();
 function editorMounted(editor: any) {
     editorRef.value = editor;
 
-    monaco.monacoRef.value?.languages.register({ id: 'koshur' });
-    monaco.monacoRef.value?.languages.setLanguageConfiguration('koshur', koshurConf);
+    monaco.monacoRef.value?.languages.register({ id: KOSHUR });
+    monaco.monacoRef.value?.languages.setLanguageConfiguration(KOSHUR, koshurConf);
 
     // @ts-ignore
-    monaco.monacoRef.value?.languages.setMonarchTokensProvider('koshur', language);
+    monaco.monacoRef.value?.languages.setMonarchTokensProvider(KOSHUR, language);
 }
 </script>
 
