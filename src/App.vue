@@ -19,12 +19,11 @@ import { runner } from './utils/runner.js';
 import { koshurConf, language } from './utils/language';
 
 const code = ref(examples['Hello world!']);
+const log = ref('');
 
 const setExample = (e: keyof typeof examples) => {
     code.value = examples[e];
 };
-
-const log = ref('');
 
 const logger = (...args: Array<any>) => {
     for (let i = 0; i < args.length; i++) {
@@ -34,12 +33,19 @@ const logger = (...args: Array<any>) => {
     }
 
     log.value += '\n';
+
+    logRef.value.scrollTop = logRef.value.scrollHeight;
+};
+
+const clearLog = () => {
+    log.value = '';
 };
 
 function runCode() {
     runner(logger, code.value);
 }
 
+const logRef = ref();
 const editorRef = shallowRef();
 const monaco = useMonaco();
 
@@ -56,9 +62,9 @@ function editorMounted(editor: any) {
 
 <template>
     <div class="flex flex-col h-full">
-        <TopBar @run="runCode" @clear="log = ''" @example="setExample" />
+        <TopBar @run="runCode" @clear="clearLog" @example="setExample" />
 
-        <div class="flex flex-col flex-1 md:flex-row">
+        <div class="flex flex-col flex-1 md:flex-row h-[calc(100vh-62px)]">
             <div class="flex-1 border-r-2 border-r-slate-950">
                 <vue-monaco-editor v-model:value="code" theme="vs-dark" language="koshur" :options="{
                     automaticLayout: true,
@@ -66,9 +72,8 @@ function editorMounted(editor: any) {
                     formatOnPaste: true,
                 }" @mount="editorMounted" />
             </div>
-            <div class="min-w-full p-1 md:min-w-96 min-h-40 md:min-h-full">
-                <pre>{{ log }}</pre>
-            </div>
+            <pre ref="logRef"
+                class="w-full h-40 p-1 overflow-auto md:w-1/3 md:h-[calc(100vh-62px)] bg-slate-900">{{ log }}</pre>
         </div>
     </div>
 </template>
