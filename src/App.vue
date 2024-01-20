@@ -58,15 +58,15 @@ function editorMounted(editor: any) {
     <div class="flex flex-col h-full">
         <TopBar @run="runCode" @clear="log = ''" @example="setExample" />
 
-        <div class="flex flex-1">
-            <div class="self-stretch flex-1 border-r-2 border-r-slate-950">
+        <div class="flex flex-col flex-1 md:flex-row">
+            <div class="flex-1 border-r-2 border-r-slate-950">
                 <vue-monaco-editor v-model:value="code" theme="vs-dark" language="koshur" :options="{
                     automaticLayout: true,
                     formatOnType: true,
                     formatOnPaste: true,
                 }" @mount="editorMounted" />
             </div>
-            <div class="w-1/3 p-1">
+            <div class="min-w-full p-1 md:min-w-96 min-h-40 md:min-h-full">
                 <pre>{{ log }}</pre>
             </div>
         </div>
