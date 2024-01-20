@@ -21,29 +21,31 @@ const chosen = ref(examples[0]);
 </script>
 
 <template>
-    <div class="flex items-center p-1 px-5 bg-slate-950">
-        <div class="px-2">
+    <div class="flex flex-wrap items-center p-1 px-5 bg-slate-950">
+        <div class="flex justify-center w-full gap-2 p-2 md:w-auto">
             <img src="/leaf.svg" class="w-5" />
+            <div class="text-lg text-slate-300">Koshur Online</div>
         </div>
-        <div class="text-lg text-slate-300">Koshur Online</div>
-        <div class="flex items-center gap-2 px-2 ml-auto">
-            <div class="px-2 border rounded border-slate-600">
+        <div class="flex flex-wrap items-center gap-2 p-2 ml-auto">
+            <div class="flex items-center justify-between w-full px-2 border rounded border-slate-600 md:w-auto">
                 Example:
-                <select v-model="chosen" class="p-1 m-1 rounded outline-none bg-slate-800"
+                <select v-model="chosen" class="flex-1 p-1 m-1 rounded outline-none bg-slate-800"
                     @change="$emit('example', chosen)">
                     <option v-for="e in examples" :key="e">{{ e }}</option>
                 </select>
             </div>
-            <div class="px-2 py-1 bg-green-800 border rounded cursor-pointer select-none hover:bg-green-700 active:bg-green-600 border-green-950"
-                @click="$emit('run')">Run
-                &rtrif;
-            </div>
-            <div class="px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950"
-                @click="$emit('clear')">Clear
-                &Cross;
+            <div class="flex justify-center w-full gap-2 md:w-auto">
+                <div class="px-2 py-1 bg-green-800 border rounded cursor-pointer select-none hover:bg-green-700 active:bg-green-600 border-green-950"
+                    @click="$emit('run')">Run
+                    &rtrif;
+                </div>
+                <div class="px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950"
+                    @click="$emit('clear')">Clear
+                    &Cross;
+                </div>
             </div>
         </div>
-        <div class="flex gap-2 ml-auto text-sm">
+        <div class="flex justify-center w-full gap-2 p-1 ml-auto text-sm md:w-auto">
             <a href="https://github.com/AfaanBilal/koshur-online" target="_blank" rel="noopener"
                 class="hover:text-blue-400">
                 GitHub
