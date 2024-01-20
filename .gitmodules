@@ -1,0 +1,3 @@
+[submodule "koshur-lang"]
+	path = koshur-lang
+	url = https://github.com/AfaanBilal/koshur-lang
