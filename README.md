@@ -1,7 +1,7 @@
 🍁 Koshur Online
 ================
 
-Run [Koshur](https://github.com/AfaanBilal/koshur-lang) in your browser!
+#### Run [Koshur](https://github.com/AfaanBilal/koshur-lang) in your browser here: [Koshur Online](https://koshur.afaan.dev)
 
 ---
 
