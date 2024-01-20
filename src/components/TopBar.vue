@@ -23,8 +23,14 @@ const chosen = ref(examples[0]);
 <template>
     <div class="flex flex-wrap items-center p-1 px-5 bg-slate-950">
         <div class="flex justify-center w-full gap-2 p-2 md:w-auto">
-            <img src="/leaf.svg" class="w-5" />
-            <div class="text-lg text-slate-300">Koshur Online</div>
+            <img src="/leaf.svg" class="w-10" />
+            <div class="flex flex-col text-lg text-slate-300">
+                Koshur Online
+                <a href="https://github.com/AfaanBilal/koshur-lang?tab=readme-ov-file#-koshur-lang" target="_blank"
+                    rel="noopener" class="text-xs hover:text-blue-400 text-slate-400">
+                    &#8614; Documentation
+                </a>
+            </div>
         </div>
         <div
             class="flex items-center justify-between w-full gap-2 p-2 px-2 ml-auto border rounded border-slate-600 md:w-auto">
