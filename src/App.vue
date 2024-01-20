@@ -11,10 +11,12 @@
  * @copyright   2024 Afaan Bilal
  */
 
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
+import { useMonaco } from '@guolao/vue-monaco-editor';
 import TopBar from './components/TopBar.vue';
-import { runner } from './utils/runner.js';
 import examples from './utils/examples';
+import { runner } from './utils/runner.js';
+import { koshurConf, language } from './utils/language';
 
 const code = ref(examples['Hello world!']);
 
@@ -37,6 +39,19 @@ const logger = (...args: Array<any>) => {
 function runCode() {
     runner(logger, code.value);
 }
+
+const editorRef = shallowRef();
+const monaco = useMonaco();
+
+function editorMounted(editor: any) {
+    editorRef.value = editor;
+
+    monaco.monacoRef.value?.languages.register({ id: 'koshur' });
+    monaco.monacoRef.value?.languages.setLanguageConfiguration('koshur', koshurConf);
+
+    // @ts-ignore
+    monaco.monacoRef.value?.languages.setMonarchTokensProvider('koshur', language);
+}
 </script>
 
 <template>
@@ -45,11 +60,11 @@ function runCode() {
 
         <div class="flex flex-1">
             <div class="self-stretch flex-1 border-r-2 border-r-slate-950">
-                <vue-monaco-editor ref="editorRef" v-model:value="code" theme="vs-dark" :options="{
+                <vue-monaco-editor v-model:value="code" theme="vs-dark" language="koshur" :options="{
                     automaticLayout: true,
                     formatOnType: true,
                     formatOnPaste: true,
-                }" />
+                }" @mount="editorMounted" />
             </div>
             <div class="w-1/3 p-1">
                 <pre>{{ log }}</pre>
