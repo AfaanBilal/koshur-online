@@ -63,7 +63,7 @@ const editorMounted = (editor: any) => {
         <TopBar @run="runCode" @clear="clearLog" @example="setExample" />
 
         <div v-show="log != 'Console\n=======\n\n'"
-            class="fixed px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950 bottom-[7.5rem] md:bottom-auto md:top-16 right-2"
+            class="fixed px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950 bottom-[7.5rem] md:bottom-auto md:top-20 right-2"
             @click="clearLog">
             Clear &Cross;
         </div>
