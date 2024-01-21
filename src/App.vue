@@ -41,15 +41,13 @@ const clearLog = () => {
     log.value = 'Console\n=======\n\n';
 };
 
-function runCode() {
-    runner(logger, code.value);
-}
+const runCode = () => runner(logger, code.value);
 
 const logRef = ref();
 const editorRef = shallowRef();
 const monaco = useMonaco();
 
-function editorMounted(editor: any) {
+const editorMounted = (editor: any) => {
     editorRef.value = editor;
 
     monaco.monacoRef.value?.languages.register({ id: KOSHUR });
@@ -57,7 +55,7 @@ function editorMounted(editor: any) {
 
     // @ts-ignore
     monaco.monacoRef.value?.languages.setMonarchTokensProvider(KOSHUR, language);
-}
+};
 </script>
 
 <template>
