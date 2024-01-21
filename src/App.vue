@@ -20,6 +20,7 @@ import { koshurConf, language, KOSHUR } from './utils/language';
 
 const code = ref(examples['Hello world!']);
 const log = ref(`Console\n=======\n\n`);
+const clearConsoleOnRun = ref(false);
 
 const setExample = (e: keyof typeof examples) => {
     code.value = examples[e];
@@ -41,7 +42,13 @@ const clearLog = () => {
     log.value = 'Console\n=======\n\n';
 };
 
-const runCode = () => runner(logger, code.value);
+const runCode = () => {
+    if (clearConsoleOnRun.value) {
+        clearLog();
+    }
+
+    runner(logger, code.value);
+};
 
 const logRef = ref();
 const editorRef = shallowRef();
@@ -67,6 +74,11 @@ const editorMounted = (editor: any) => {
             @click="clearLog">
             Clear &Cross;
         </div>
+
+        <label for="clearOnRun"
+            class="fixed px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950 bottom-[7.5rem] md:bottom-auto md:top-20 right-24">
+            <input id="clearOnRun" type="checkbox" v-model="clearConsoleOnRun"> Auto-clear on Run
+        </label>
 
         <div class="flex flex-col flex-1 md:flex-row h-[calc(100vh-62px)]">
             <div class="flex-1 border-r-2 border-r-slate-950">
