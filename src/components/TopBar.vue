@@ -12,12 +12,11 @@
  */
 
 import { ref } from 'vue';
+import examples from '../utils/examples';
 
-const examples = [
-    'Hello world!', 'Arithmetic', 'Control Flow', 'Functions', 'Fibonacci', 'Test'
-];
+const exampleKeys = Object.keys(examples);
 
-const chosen = ref(examples[0]);
+const chosen = ref(exampleKeys[0]);
 </script>
 
 <template>
@@ -37,7 +36,7 @@ const chosen = ref(examples[0]);
             Example:
             <select v-model="chosen" class="flex-1 p-1 m-1 rounded outline-none bg-slate-800"
                 @change="$emit('example', chosen)">
-                <option v-for="e in examples" :key="e">{{ e }}</option>
+                <option v-for="e in exampleKeys" :key="e">{{ e }}</option>
             </select>
             <div class="px-2 py-1 text-center bg-green-800 border rounded cursor-pointer select-none hover:bg-green-700 active:bg-green-600 border-green-950"
                 @click="$emit('run')">
