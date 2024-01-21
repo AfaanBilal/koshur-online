@@ -78,8 +78,9 @@ function editorMounted(editor: any) {
                     formatOnPaste: true,
                 }" @mount="editorMounted" />
             </div>
-            <pre ref="logRef"
-                class="w-full h-40 p-1 overflow-auto md:w-1/3 md:h-[calc(100vh-62px)] bg-slate-900">{{ log }}</pre>
+            <pre ref="logRef" class="w-full h-40 p-1 overflow-auto md:w-1/3 md:h-[calc(100vh-62px)] bg-slate-900">
+                {{ log }}
+            </pre>
         </div>
     </div>
 </template>
