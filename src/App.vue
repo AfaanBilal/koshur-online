@@ -59,7 +59,7 @@ const editorMounted = (editor: any) => {
 </script>
 
 <template>
-    <div class="flex flex-col h-full">
+    <div class="flex flex-col h-full overflow-hidden">
         <TopBar @run="runCode" @clear="clearLog" @example="setExample" />
 
         <div v-show="log != 'Console\n=======\n\n'"
