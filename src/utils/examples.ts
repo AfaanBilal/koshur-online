@@ -97,10 +97,10 @@ yiChaPrime = banav(n, d) {
         poz;
     } nate {
         yeli n % d == 0 {
-            apuz
+            apuz;
         } nate {
             yiChaPrime(n, d + 1);
-        }
+        };
     };
 };
 
