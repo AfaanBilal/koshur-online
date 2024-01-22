@@ -86,6 +86,36 @@ years = (numDays - days - 30 * months) / 365;
 
 wan(numDays, "days are", years, "years", months, "months", days, "days.");
 `,
+    'Prime Numbers': `#
+# Prime Numbers
+#
+# Koshur lang (https://github.com/AfaanBilal/koshur-lang)
+#
+
+yiChaPrime = banav(n, d) {
+    yeli d > n / 2 {
+        poz;
+    } nate {
+        yeli n % d == 0 {
+            apuz
+        } nate {
+            yiChaPrime(n, d + 1);
+        }
+    };
+};
+
+yeli yiChaPrime(73, 2) {
+    wan("Aa,", 73, "chu prime!");
+} nate {
+    wan("Na sa!", 73, "chu ne prime!");
+};
+
+yeli yiChaPrime(93, 2) {
+    wan("Aa,", 93, "chu prime!");
+} nate {
+    wan("Na sa!", 93, "chu ne prime!");
+};
+`,
     'Test': `#
 # Test
 #
