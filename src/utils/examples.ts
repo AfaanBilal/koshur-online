@@ -256,6 +256,56 @@ factors(10);
 wan("Factors of 49: ");
 factors(49);
 `,
+    'nCr': `#
+#
+# nCr
+# Number of combinations when choosing r elements out of n.
+#
+# Koshur lang (https://github.com/AfaanBilal/koshur-lang)
+#
+
+factorial = banav(n) {
+    yeli n < 0 {
+        0;
+    } nate yeli n == 0 {
+        1;
+    } nate {
+        n * factorial(n - 1);
+    };
+};
+
+nCr = banav(n, r) {
+    factorial(n) / (factorial(n - r) * factorial(r));
+};
+
+wan(nCr(5, 2));
+wan(nCr(8, 3));
+`,
+    'nPr': `#
+#
+# nPr
+# Number of permutations when choosing r elements out of n.
+#
+# Koshur lang (https://github.com/AfaanBilal/koshur-lang)
+#
+
+factorial = banav(n) {
+    yeli n < 0 {
+        0;
+    } nate yeli n == 0 {
+        1;
+    } nate {
+        n * factorial(n - 1);
+    };
+};
+
+nPr = banav(n, r) {
+    factorial(n) / factorial(n - r);
+};
+
+wan(nPr(5, 2));
+wan(nPr(8, 3));
+`,
     'Test': `#
 # Test
 #
