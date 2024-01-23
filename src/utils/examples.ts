@@ -118,6 +118,79 @@ yeli yiChaPrime(93) {
     wan("Na sa!", 93, "chu ne prime!");
 };
 `,
+    'Raise to Power': `#
+# Raise to Power
+#
+# Koshur lang (https://github.com/AfaanBilal/koshur-lang)
+#
+
+khalPoweras = banav(x, n) {
+    yeli n == 0 {
+        1;
+    } nate yeli n == 1 {
+        x;
+    } nate {
+        x * khalPoweras(x, n - 1);
+    };
+};
+
+wan(khalPoweras(10, 3));
+wan(khalPoweras(2, 10));
+`,
+    'Count Digits': `#
+# Count Digits
+#
+# Koshur lang (https://github.com/AfaanBilal/koshur-lang)
+#
+
+ginzrawDigit = banav(n) {
+    yeli n < 10 {
+        1;
+    } nate {
+        1 + ginzrawDigit((n - (n % 10)) / 10);
+    };
+};
+
+wan(ginzrawDigit(2));
+wan(ginzrawDigit(1234));
+`,
+    'Reverse a Number': `#
+# Reverse a Number
+#
+# Koshur lang (https://github.com/AfaanBilal/koshur-lang)
+#
+
+khalPoweras = banav(x, n) {
+    yeli n == 0 {
+        1;
+    } nate yeli n == 1 {
+        x;
+    } nate {
+        x * khalPoweras(x, n - 1);
+    };
+};
+
+ginzrawDigit = banav(n) {
+    yeli n < 10 {
+        1;
+    } nate {
+        1 + ginzrawDigit((n - (n % 10)) / 10);
+    };
+};
+
+karsaReverse = banav(n, i) {
+    yeli i == apuz {
+        karsaReverse(n, ginzrawDigit(n) - 1);
+    } nate yeli n < 10 {
+        n;
+    } nate {
+        khalPoweras(10, i) * (n % 10) + karsaReverse((n - (n % 10)) / 10, i - 1);
+    };
+};
+
+wan(karsaReverse(123));
+wan(karsaReverse(987654321));
+`,
     'Test': `#
 # Test
 #
