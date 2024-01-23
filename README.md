@@ -3,15 +3,34 @@
 
 ### Run [Koshur](https://github.com/AfaanBilal/koshur-lang) in your browser here: [Koshur Online](https://koshur.afaan.dev)
 
+### **Author**: [Afaan Bilal](https://afaan.dev)
+
 ---
 
 ## Screenshots
 
-![Meeqat](public/screenshots/koshur-online.png)
+![Koshur](public/screenshots/koshur-online.png)
 
 ---
 
-### **Author**: [Afaan Bilal](https://afaan.dev)
+## Examples
+
+- Hello world!
+- Arithmetic
+- Control Flow
+- Functions
+- Fibonacci
+- Factorial
+- Days to Years, Months, Days
+- Prime Numbers
+- Raise to Power
+- Count Digits
+- Reverse a Number
+- HCF / GCD
+- Factors
+- nCr
+- nPr
+- Test
 
 ---
 
