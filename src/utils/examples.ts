@@ -93,7 +93,7 @@ wan(factorial(5));
 wan(factorial(7));
 wan(factorial(10));
 `,
-    'Days to Years, Months, Days': `#
+    'Days to Y+M+D': `#
 # Days to Years, Months, Days (approx)
 #
 # Koshur lang (https://github.com/AfaanBilal/koshur-lang)
@@ -139,7 +139,7 @@ yeli yiChaPrime(93) {
     wan("Na sa!", 93, "chu ne prime!");
 };
 `,
-    'Raise to Power': `#
+    'Raise Power': `#
 # Raise to Power
 #
 # Koshur lang (https://github.com/AfaanBilal/koshur-lang)
@@ -175,7 +175,7 @@ ginzrawDigit = banav(n) {
 wan(ginzrawDigit(2));
 wan(ginzrawDigit(1234));
 `,
-    'Reverse a Number': `#
+    'Reverse Number': `#
 # Reverse a Number
 #
 # Koshur lang (https://github.com/AfaanBilal/koshur-lang)
