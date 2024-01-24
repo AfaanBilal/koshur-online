@@ -11,7 +11,7 @@
  * @copyright   2024 Afaan Bilal
  */
 
-import { nextTick, ref, shallowRef } from 'vue';
+import { computed, nextTick, ref, shallowRef } from 'vue';
 import { useMonaco } from '@guolao/vue-monaco-editor';
 import TopBar from './components/TopBar.vue';
 import examples from './utils/examples';
@@ -21,6 +21,8 @@ import { koshurConf, language, KOSHUR } from './utils/language';
 const code = ref(examples['Hello world!']);
 const log = ref(`Console\n=======\n\n`);
 const clearConsoleOnRun = ref(false);
+
+const isLogEmpty = computed(() => log.value == 'Console\n=======\n\n');
 
 const setExample = (e: keyof typeof examples) => {
     code.value = examples[e];
@@ -69,14 +71,15 @@ const editorMounted = (editor: any) => {
     <div class="flex flex-col h-full overflow-hidden">
         <TopBar @run="runCode" @clear="clearLog" @example="setExample" />
 
-        <div v-show="log != 'Console\n=======\n\n'"
+        <div v-show="!isLogEmpty"
             class="fixed px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950 bottom-[7.5rem] md:bottom-auto md:top-20 right-2"
             @click="clearLog">
             Clear &Cross;
         </div>
 
         <label for="clearOnRun"
-            class="fixed px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950 bottom-[7.5rem] md:bottom-auto md:top-20 right-24">
+            class="fixed px-2 py-1 border rounded cursor-pointer select-none bg-slate-800 hover:bg-slate-700 active:bg-slate-600 border-slate-950 bottom-[7.5rem] md:bottom-auto md:top-20"
+            :class="{'right-2': isLogEmpty, 'right-24': !isLogEmpty}">
             <input id="clearOnRun" type="checkbox" v-model="clearConsoleOnRun"> Auto-clear on Run
         </label>
 
