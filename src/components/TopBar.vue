@@ -20,7 +20,7 @@ const chosen = ref(exampleKeys[0]);
 </script>
 
 <template>
-    <div class="flex flex-wrap items-center p-1 px-5 bg-slate-950">
+    <div class="flex flex-wrap items-center p-1 md:px-2 bg-slate-950">
         <div class="flex justify-center w-full gap-2 p-2 md:w-auto">
             <img src="/leaf.svg" class="w-10" />
             <div class="flex flex-col text-lg text-slate-300">
@@ -32,7 +32,7 @@ const chosen = ref(exampleKeys[0]);
             </div>
         </div>
         <div
-            class="flex items-center justify-between w-full gap-2 p-2 px-2 ml-auto border rounded border-slate-600 md:w-auto">
+            class="flex items-center justify-between w-full gap-2 p-1 border rounded md:ml-auto border-slate-600 md:w-auto">
             Example:
             <select v-model="chosen" class="flex-1 p-1 m-1 rounded outline-none bg-slate-800"
                 @change="$emit('example', chosen)">
