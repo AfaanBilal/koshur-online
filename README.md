@@ -30,6 +30,7 @@
 - Factors
 - nCr
 - nPr
+- Linear Curve Fitting
 - Test
 
 ---
