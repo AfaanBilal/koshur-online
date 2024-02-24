@@ -9,7 +9,7 @@
 
 ## Screenshots
 
-![Koshur](public/screenshots/koshur-online.png)
+![Koshur](public/screenshots/koshur-online-hero.png)
 
 ---
 
