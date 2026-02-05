@@ -13,6 +13,7 @@
 
 import { ref } from 'vue';
 import examples from '../utils/examples';
+import SelectMenu from './SelectMenu.vue';
 
 const exampleKeys = Object.keys(examples);
 
@@ -20,7 +21,8 @@ const chosen = ref(exampleKeys[0]);
 </script>
 
 <template>
-    <nav class="sticky top-0 z-50 flex flex-wrap items-center p-2 border-b backdrop-blur-md bg-slate-950/80 border-slate-800">
+    <nav
+        class="sticky top-0 z-50 flex flex-wrap items-center p-2 border-b backdrop-blur-md bg-slate-950/80 border-slate-800">
         <div class="flex items-center gap-3 mr-auto">
             <img src="/leaf.svg" class="w-8 h-8 drop-shadow-lg" alt="Koshur Leaf" />
             <div class="flex flex-col leading-tight">
@@ -33,18 +35,10 @@ const chosen = ref(exampleKeys[0]);
         </div>
 
         <div class="flex items-center w-full gap-3 mt-2 md:mt-0 md:w-auto">
-            <div class="relative flex items-center flex-1 md:flex-initial">
-                <span class="absolute left-3 text-xs font-medium text-slate-500 pointer-events-none">Example</span>
-                <select v-model="chosen"
-                    class="w-full py-1.5 pl-16 pr-8 text-sm transition-colors border rounded-lg appearance-none cursor-pointer md:w-48 bg-slate-900 border-slate-700 text-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 hover:bg-slate-800"
-                    @change="$emit('example', chosen)">
-                    <option v-for="e in exampleKeys" :key="e">{{ e }}</option>
-                </select>
-                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-slate-500">
-                    <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                    </svg>
-                </div>
+            <div class="relative flex items-center flex-1 md:flex-initial w-full md:w-64">
+                <span
+                    class="absolute left-0 -ml-16 text-xs font-medium text-slate-500 pointer-events-none hidden md:block">Example</span>
+                <SelectMenu v-model="chosen" :options="exampleKeys" @change="$emit('example', chosen)" class="w-full" />
             </div>
 
             <button

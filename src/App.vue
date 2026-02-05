@@ -11,9 +11,10 @@
  * @copyright   2024 Afaan Bilal
  */
 
-import { computed, nextTick, ref, shallowRef } from 'vue';
+import { computed, nextTick, ref, shallowRef, onMounted, onUnmounted } from 'vue';
 import { useMonaco } from '@guolao/vue-monaco-editor';
 import TopBar from './components/TopBar.vue';
+import StatusBar from './components/StatusBar.vue';
 import examples from './utils/examples';
 import { runner } from './utils/runner.js';
 import { koshurConf, language, KOSHUR } from './utils/language';
@@ -21,6 +22,9 @@ import { koshurConf, language, KOSHUR } from './utils/language';
 const code = ref(examples['Hello world!']);
 const log = ref(``);
 const clearConsoleOnRun = ref(false);
+const status = ref('Ready');
+const cursorLine = ref(1);
+const cursorColumn = ref(1);
 
 const isLogEmpty = computed(() => log.value == '');
 
@@ -45,11 +49,23 @@ const clearLog = () => {
 };
 
 const runCode = () => {
+    status.value = 'Running...';
     if (clearConsoleOnRun.value) {
         clearLog();
     }
 
-    runner(logger, code.value);
+    try {
+        runner(logger, code.value);
+        status.value = 'Success';
+    } catch (e) {
+        status.value = 'Error';
+        logger(e);
+    }
+
+    // Reset status after a delay
+    setTimeout(() => {
+        if (status.value === 'Success') status.value = 'Ready';
+    }, 2000);
 };
 
 const logRef = ref();
@@ -64,16 +80,90 @@ const editorMounted = (editor: any) => {
 
     // @ts-ignore
     monaco.monacoRef.value?.languages.setMonarchTokensProvider(KOSHUR, language);
+
+    // Cursor tracking
+    editor.onDidChangeCursorPosition((e: any) => {
+        cursorLine.value = e.position.lineNumber;
+        cursorColumn.value = e.position.column;
+    });
+
+    // Add Key Bindings to Monaco
+    const m = monaco.monacoRef.value;
+    if (m) {
+        // Ctrl+Enter or Cmd+Enter to Run
+        editor.addCommand(m.KeyMod.CtrlCmd | m.KeyCode.Enter, () => {
+            runCode();
+        });
+
+        // Ctrl+L or Cmd+L to Clear
+        editor.addCommand(m.KeyMod.CtrlCmd | m.KeyCode.KeyL, () => {
+            clearLog();
+        });
+    }
 };
+
+// Resizing Logic
+const consoleWidth = ref(500); // Initial fallback
+const isResizing = ref(false);
+const containerRef = ref<HTMLElement | null>(null);
+
+const startResize = () => {
+    isResizing.value = true;
+    document.addEventListener('mousemove', handleResize);
+    document.addEventListener('mouseup', stopResize);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none'; // Prevent text selection
+};
+
+const handleResize = (e: MouseEvent) => {
+    if (!containerRef.value) return;
+    const containerRect = containerRef.value.getBoundingClientRect();
+    const newWidth = containerRect.right - e.clientX;
+    // Min width constraints
+    if (newWidth > 200 && newWidth < containerRect.width - 200) {
+        consoleWidth.value = newWidth;
+    }
+};
+
+const stopResize = () => {
+    isResizing.value = false;
+    document.removeEventListener('mousemove', handleResize);
+    document.removeEventListener('mouseup', stopResize);
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+};
+
+// Keyboard Shortcuts
+const handleKeydown = (e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        runCode();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+        e.preventDefault();
+        clearLog();
+    }
+};
+
+onMounted(() => {
+    // Set initial console width to 30% of the screen for a 70/30 split
+    consoleWidth.value = window.innerWidth * 0.30;
+
+    window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown);
+});
 </script>
 
 <template>
     <div class="flex flex-col h-full font-pl bg-slate-950">
         <TopBar @run="runCode" @clear="clearLog" @example="setExample" />
 
-        <div class="flex flex-col flex-1 overflow-hidden md:flex-row">
+        <div class="flex flex-col flex-1 overflow-hidden md:flex-row" ref="containerRef">
             <!-- Editor Pane -->
-            <div class="flex flex-col flex-1 border-b md:border-b-0 md:border-r border-slate-800">
+            <div class="flex flex-col flex-1 min-w-0">
                 <div class="flex items-center justify-between px-4 py-2 border-b bg-slate-900 border-slate-800">
                     <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Editor</span>
                 </div>
@@ -91,11 +181,21 @@ const editorMounted = (editor: any) => {
                 </div>
             </div>
 
+            <!-- Resizer Handle -->
+            <div class="hidden w-1 transition-colors border-l cursor-col-resize md:flex bg-slate-950 hover:bg-blue-500 border-slate-800"
+                :class="{ 'bg-blue-500': isResizing }" @mousedown.prevent="startResize"></div>
+
             <!-- Console Pane -->
-            <div class="flex flex-col w-full md:w-1/3 min-w-[300px] bg-slate-900">
+            <div class="flex flex-col w-full md:h-full border-t md:border-t-0 border-slate-800"
+                :style="{ width: isResizing || consoleWidth ? `${consoleWidth}px` : 'auto' }">
                 <!-- Console Toolbar -->
                 <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-900/50">
-                    <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Console Output</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Console</span>
+                        <span
+                            class="px-1.5 py-0.5 text-[10px] bg-slate-800 rounded text-slate-400 border border-slate-700">Ctrl+Enter
+                            to Run</span>
+                    </div>
 
                     <div class="flex items-center gap-4">
                         <label
@@ -108,7 +208,7 @@ const editorMounted = (editor: any) => {
                         <button
                             class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-400 transition-all rounded hover:text-white hover:bg-slate-800 active:bg-slate-700"
                             :class="{ 'opacity-50 pointer-events-none': isLogEmpty }" @click="clearLog"
-                            :disabled="isLogEmpty">
+                            :disabled="isLogEmpty" title="Ctrl+L to Clear">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -120,11 +220,13 @@ const editorMounted = (editor: any) => {
 
                 <!-- Console Output -->
                 <div class="flex-1 overflow-auto custom-scrollbar bg-slate-950">
-                    <pre class="p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-300"
+                    <pre class="p-4 font-mono text-sm leading-relaxed whitespace-pre-wrap text-slate-300 selection:bg-blue-500/30"
                         ref="logRef">{{ log }}</pre>
                 </div>
             </div>
         </div>
+
+        <StatusBar :cursor-line="cursorLine" :cursor-column="cursorColumn" language="Koshur" :status="status" />
     </div>
 </template>
 
