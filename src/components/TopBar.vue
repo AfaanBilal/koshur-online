@@ -11,13 +11,6 @@
  * @copyright   2024 Afaan Bilal
  */
 
-import { ref } from 'vue';
-import examples from '../utils/examples';
-import SelectMenu from './SelectMenu.vue';
-
-const exampleKeys = Object.keys(examples);
-
-const chosen = ref(exampleKeys[0]);
 </script>
 
 <template>
@@ -34,22 +27,7 @@ const chosen = ref(exampleKeys[0]);
             </div>
         </div>
 
-        <div class="flex items-center w-full gap-3 mt-2 md:mt-0 md:w-auto">
-            <div class="relative flex items-center flex-1 md:flex-initial w-full md:w-64">
-                <span
-                    class="absolute left-0 -ml-16 text-xs font-medium text-slate-500 pointer-events-none hidden md:block">Example</span>
-                <SelectMenu v-model="chosen" :options="exampleKeys" @change="$emit('example', chosen)" class="w-full" />
-            </div>
-
-            <button
-                class="flex items-center gap-2 px-4 py-1.5 text-sm font-semibold text-white transition-all bg-green-600 rounded-lg shadow-lg hover:bg-green-500 active:bg-green-700 active:scale-95 shadow-green-900/20 ring-1 ring-inset ring-green-500/10"
-                @click="$emit('run')">
-                <span>Run</span>
-                <span class="text-lg leading-none">&rtrif;</span>
-            </button>
-        </div>
-
-        <div class="hidden gap-4 ml-6 text-sm font-medium md:flex text-slate-400">
+        <div class="flex items-center gap-4 ml-auto text-sm font-medium text-slate-400">
             <a href="https://github.com/AfaanBilal/koshur-online" target="_blank" rel="noopener"
                 class="transition-colors hover:text-white">
                 GitHub

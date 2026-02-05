@@ -15,10 +15,13 @@ import { computed, nextTick, ref, shallowRef, onMounted, onUnmounted } from 'vue
 import { useMonaco } from '@guolao/vue-monaco-editor';
 import TopBar from './components/TopBar.vue';
 import StatusBar from './components/StatusBar.vue';
+import SelectMenu from './components/SelectMenu.vue';
 import examples from './utils/examples';
 import { runner } from './utils/runner.js';
 import { koshurConf, language, KOSHUR } from './utils/language';
 
+const exampleKeys = Object.keys(examples);
+const chosenExample = ref(exampleKeys[0]);
 const code = ref(examples['Hello world!']);
 const log = ref(``);
 const clearConsoleOnRun = ref(false);
@@ -31,6 +34,10 @@ const isLogEmpty = computed(() => log.value == '');
 const setExample = (e: keyof typeof examples) => {
     code.value = examples[e];
 };
+
+const handleExampleChange = (val: string) => {
+    setExample(val as keyof typeof examples);
+}
 
 const logger = (...args: Array<any>) => {
     for (let i = 0; i < args.length; i++) {
@@ -159,13 +166,32 @@ onUnmounted(() => {
 
 <template>
     <div class="flex flex-col h-full font-pl bg-slate-950">
-        <TopBar @run="runCode" @clear="clearLog" @example="setExample" />
+        <TopBar />
 
         <div class="flex flex-col flex-1 overflow-hidden md:flex-row" ref="containerRef">
             <!-- Editor Pane -->
             <div class="flex flex-col flex-1 min-w-0">
                 <div class="flex items-center justify-between px-4 py-2 border-b bg-slate-900 border-slate-800">
                     <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Editor</span>
+
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-40">
+                            <SelectMenu v-model="chosenExample" :options="exampleKeys" @change="handleExampleChange" />
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button
+                                class="flex items-center gap-2 px-3 py-1 text-xs font-semibold text-white transition-all bg-green-600 rounded shadow-lg hover:bg-green-500 active:bg-green-700 active:scale-95 shadow-green-900/20 ring-1 ring-inset ring-green-500/10"
+                                @click="runCode" title="Ctrl+Enter to Run">
+                                <span>Run</span>
+                                <span class="text-base leading-none">&rtrif;</span>
+                            </button>
+                            <span
+                                class="hidden text-[10px] text-slate-500 sm:inline bg-slate-800/50 px-1.5 py-0.5 rounded border border-slate-700/50">
+                                Ctrl+Enter
+                            </span>
+                        </div>
+                    </div>
                 </div>
                 <div class="relative flex-1">
                     <vue-monaco-editor v-model:value="code" theme="vs-dark" language="koshur" :options="{
@@ -192,9 +218,6 @@ onUnmounted(() => {
                 <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-900/50">
                     <div class="flex items-center gap-2">
                         <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Console</span>
-                        <span
-                            class="px-1.5 py-0.5 text-[10px] bg-slate-800 rounded text-slate-400 border border-slate-700">Ctrl+Enter
-                            to Run</span>
                     </div>
 
                     <div class="flex items-center gap-4">
@@ -205,16 +228,22 @@ onUnmounted(() => {
                             Auto-clear
                         </label>
 
-                        <button
-                            class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-400 transition-all rounded hover:text-white hover:bg-slate-800 active:bg-slate-700"
-                            :class="{ 'opacity-50 pointer-events-none': isLogEmpty }" @click="clearLog"
-                            :disabled="isLogEmpty" title="Ctrl+L to Clear">
-                            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                            Clear
-                        </button>
+                        <div class="flex items-center gap-2">
+                            <button
+                                class="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-400 transition-all rounded hover:text-white hover:bg-slate-800 active:bg-slate-700"
+                                :class="{ 'opacity-50 pointer-events-none': isLogEmpty }" @click="clearLog"
+                                :disabled="isLogEmpty" title="Ctrl+L to Clear">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Clear
+                            </button>
+                            <span
+                                class="hidden text-[10px] text-slate-500 sm:inline bg-slate-800/50 px-1.5 py-0.5 rounded border border-slate-700/50">
+                                Ctrl+L
+                            </span>
+                        </div>
                     </div>
                 </div>
 
