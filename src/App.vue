@@ -41,7 +41,7 @@ const logger = (...args: Array<any>) => {
 };
 
 const clearLog = () => {
-    log.value = 'Console\n=======\n\n';
+    log.value = '';
 };
 
 const runCode = () => {
