@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        pl: ['Inter', 'sans-serif'],
+      },
       colors: {
         redMain: '#f8312f',
       }
