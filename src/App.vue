@@ -113,8 +113,14 @@ const editorMounted = (editor: any) => {
 const consoleWidth = ref(500); // Initial fallback
 const isResizing = ref(false);
 const containerRef = ref<HTMLElement | null>(null);
+const isMobile = ref(false); // Track mobile state
+
+const checkMobile = () => {
+    isMobile.value = window.innerWidth < 768; // md breakpoint
+};
 
 const startResize = () => {
+    if (isMobile.value) return; // Disable on mobile
     isResizing.value = true;
     document.addEventListener('mousemove', handleResize);
     document.addEventListener('mouseup', stopResize);
@@ -153,13 +159,19 @@ const handleKeydown = (e: KeyboardEvent) => {
 };
 
 onMounted(() => {
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     // Set initial console width to 30% of the screen for a 70/30 split
-    consoleWidth.value = window.innerWidth * 0.30;
+    if (!isMobile.value) {
+        consoleWidth.value = window.innerWidth * 0.30;
+    }
 
     window.addEventListener('keydown', handleKeydown);
 });
 
 onUnmounted(() => {
+    window.removeEventListener('resize', checkMobile);
     window.removeEventListener('keydown', handleKeydown);
 });
 </script>
@@ -170,11 +182,12 @@ onUnmounted(() => {
 
         <div class="flex flex-col flex-1 overflow-hidden md:flex-row" ref="containerRef">
             <!-- Editor Pane -->
-            <div class="flex flex-col flex-1 min-w-0">
+            <div class="flex flex-col flex-1 min-w-0 h-1/2 md:h-auto">
                 <div class="flex items-center justify-between px-4 py-2 border-b bg-slate-900 border-slate-800">
-                    <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Editor</span>
+                    <span
+                        class="hidden text-xs font-bold tracking-wider uppercase sm:block text-slate-500">Editor</span>
 
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-3 ml-auto sm:ml-0">
                         <div class="relative w-40">
                             <SelectMenu v-model="chosenExample" :options="exampleKeys" @change="handleExampleChange" />
                         </div>
@@ -212,15 +225,16 @@ onUnmounted(() => {
                 :class="{ 'bg-blue-500': isResizing }" @mousedown.prevent="startResize"></div>
 
             <!-- Console Pane -->
-            <div class="flex flex-col w-full md:h-full border-t md:border-t-0 border-slate-800"
-                :style="{ width: isResizing || consoleWidth ? `${consoleWidth}px` : 'auto' }">
+            <div class="flex flex-col w-full md:h-full border-t md:border-t-0 border-slate-800 h-1/2 md:flex-initial"
+                :style="!isMobile ? { width: isResizing || consoleWidth ? `${consoleWidth}px` : 'auto' } : {}">
                 <!-- Console Toolbar -->
                 <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-900/50">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Console</span>
+                        <span
+                            class="hidden text-xs font-bold tracking-wider uppercase sm:block text-slate-500">Console</span>
                     </div>
 
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 ml-auto sm:ml-0">
                         <label
                             class="flex items-center gap-2 text-xs cursor-pointer select-none text-slate-400 hover:text-slate-200">
                             <input type="checkbox" v-model="clearConsoleOnRun"
